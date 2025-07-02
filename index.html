@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Recrutamento - SERVIÇO DE EMERGÊNCIA MÉDICA (EMS)</title>
+    <style>
+        :root {
+            --ems-blue: #005eb8;
+            --ems-red: #d32f2f;
+            --ems-green: #4caf50;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', 'Arial', sans-serif; background-color: #f8f9fa; color: var(--dark-gray); line-height: 1.6; }
+        .portal-header { background: linear-gradient(135deg, var(--ems-blue) 0%, #003f7f 100%); color: white; padding: 2rem 0; text-align: center; position: relative; overflow: hidden; border-bottom: 5px solid var(--ems-red); }
+        .portal-header .badge { width: 100px; height: 100px; margin: 0 auto 1rem; display: block; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); }
+        .portal-title { font-size: 2.5rem; margin-bottom: 0.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .portal-subtitle { font-size: 1.2rem; opacity: 0.9; max-width: 800px; margin: 0 auto; }
+        .main-nav { background-color: var(--ems-blue); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; flex-wrap: wrap; }
+        .nav-button { color: white; text-decoration: none; padding: 1rem 1.5rem; font-weight: bold; transition: all 0.3s; position: relative; text-align: center; }
+        .nav-button:hover { background-color: rgba(255,255,255,0.1); }
+        .nav-button.active { background-color: var(--ems-red); }
+        .nav-button.active:after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; background-color: var(--ems-green); }
+        .main-content { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+        .welcome-section, .form-section { background-color: white; border-radius: 8px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 2px 15px rgba(0,0,0,0.1); border-left: 5px solid var(--ems-blue); }
+        .cards-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .info-card { background-color: white; border-radius: 8px; overflow: hidden; box-shadow: 0 3px 10px rgba(0,0,0,0.1); transition: transform 0.3s, box-shadow 0.3s; }
+        .info-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .card-header { background-color: var(--ems-blue); color: white; padding: 1rem; font-weight: bold; }
+        .card-body { padding: 1.5rem; }
+        .card-body ul { list-style-position: inside; margin: 1rem 0; }
+        .card-body li { margin-bottom: 0.5rem; }
+        .btn { display: inline-block; background-color: var(--ems-blue); color: white; padding: 0.8rem 1.5rem; border-radius: 4px; text-decoration: none; font-weight: bold; transition: background-color 0.3s; border: none; cursor: pointer; text-align: center; margin-top: 1rem; }
+        .btn:hover { background-color: #003f7f; }
+        .btn-red { background-color: var(--ems-red); }
+        .btn-red:hover { background-color: #a71f1c; }
+        .portal-footer { background-color: var(--dark-gray); color: white; text-align: center; padding: 2rem; margin-top: 3rem; }
+        .footer-links a { color: white; margin: 0 0.5rem; text-decoration: none; font-weight: bold; }
+        .success-message { display: none; background-color: var(--ems-green); color: white; padding: 1rem; border-radius: 4px; margin-top: 1rem; text-align: center; }
+        /* Proteção por senha para o teste */
+        #password-protection { display: flex; justify-content: center; align-items: center; height: 400px; background-color: rgba(0,0,0,0.6); }
+        .password-container { background-color: white; padding: 2rem; border-radius: 8px; max-width: 400px; width: 100%; text-align: center; box-shadow: 0 2px 15px rgba(0,0,0,0.2); }
+        .password-logo { width: 80px; margin-bottom: 1rem; }
+        #password-input { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
+        #submit-password { background-color: var(--ems-red); color: white; border: none; padding: 12px 24px; font-size: 16px; cursor: pointer; border-radius: 4px; width: 100%; font-weight: bold; text-transform: uppercase; transition: background 0.3s; }
+        #submit-password:hover { background-color: #a71f1c; }
+        #error-message { color: #d32f2f; margin-top: 15px; display: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <header class="portal-header">
+        <img src="https://static.wikia.nocookie.net/los-santos-continental/images/8/8b/Photo-ems.png/revision/latest?cb=20221129201429&path-prefix=fr" alt="Emblema EMS" class="badge">
+        <h1 class="portal-title">SERVIÇO DE EMERGÊNCIA MÉDICA (EMS)</h1>
+        <p class="portal-subtitle">Portal Oficial de Recrutamento - Junte-se à nossa equipa de profissionais de saúde e salve vidas</p>
+    </header>
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="#inicio" class="nav-button active">INÍCIO</a>
+            <a href="#requisitos" class="nav-button">REQUISITOS</a>
+            <a href="#processo" class="nav-button">PROCESSO</a>
+            <a href="#formulario" class="nav-button">FORMULÁRIO</a>
+            <a href="#teste" class="nav-button">TESTE</a>
+            <a href="#contactos" class="nav-button">CONTACTOS</a>
+        </div>
+    </nav>
+    <main class="main-content">
+        <!-- ... seções anteriores inalteradas ... -->
+        <section id="teste">
+            <!-- Proteção por senha -->
+            <div id="password-protection">
+                <div class="password-container">
+                    <img src="https://static.wikia.nocookie.net/los-santos-continental/images/8/8b/Photo-ems.png/revision/latest?cb=20221129201429&path-prefix=fr" alt="Emblema EMS" class="password-logo">
+                    <h1>ACESSO RESTRITO</h1>
+                    <p>Insira a senha de acesso para continuar:</p>
+                    <input type="password" id="password-input" placeholder="Digite a senha">
+                    <button id="submit-password">ACESSAR TESTE</button>
+                    <div id="error-message">Senha incorreta. Tente novamente.</div>
+                </div>
+            </div>
+            <!-- Conteúdo do teste (inicialmente oculto) -->
+            <div id="test-content" style="display: none; padding: 2rem; background-color: white; border-radius: 8px; box-shadow: 0 2px 15px rgba(0,0,0,0.1);">
+                <div class="official-header" style="text-align: center; margin-bottom: 1.5rem;">
+                    <img src="https://static.wikia.nocookie.net/los-santos-continental/images/8/8b/Photo-ems.png/revision/latest?cb=20221129201429&path-prefix=fr" alt="Emblema EMS" class="badge" style="width: 80px; filter: drop-shadow(0 0 5px rgba(0,0,0,0.2));">
+                    <h1 style="margin-top: 1rem; font-size: 2rem; color: var(--ems-blue);">SERVIÇO DE EMERGÊNCIA MÉDICA</h1>
+                    <p style="opacity: 0.8;">Documento Oficial - Classificação: RESTRITO AO USO INTERNO</p>
+                </div>
+                <div class="container" style="position: relative;">
+                    <div class="watermark" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                        font-size: 5rem; color: rgba(0,0,0,0.05);">EMS</div>
+                    <h1 style="text-align: center; margin-bottom: 1.5rem;">TESTE DE ADMISSÃO EMS</h1>
+                    <p style="margin-bottom: 1rem;">Este teste avalia seus conhecimentos em primeiros socorros, protocolos de suporte avançado de vida, triagem de vítimas e comunicação médica.</p>
+                    <!-- Perguntas do teste aqui -->
+                    <!-- Exemplo de pergunta -->
+                    <ol style="margin-left: 1.5rem;">
+                        <li>Descreva os passos do Suporte Básico de Vida em adultos.</li>
+                        <li>Explique como realizar a triagem em múltiplas vítimas.</li>
+                        <li>Quais são os sinais de choque hipovolêmico?</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="portal-footer">
+        <!-- rodapé inalterado -->
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+        // Configuração EmailJS (se aplicável)
+        (function(){ emailjs.init({ publicKey: "w_N4oJ960VgSnclDW" });})();
+        document.getElementById('emsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Candidatura EMS enviada com sucesso!');
+            this.reset();
+        });
+        // Proteção por senha para o teste
+        const CORRECT_PASSWORD = "EMS2025";
+        const passwordProtection = document.getElementById('password-protection');
+        const testContent = document.getElementById('test-content');
+        const passwordInput = document.getElementById('password-input');
+        const errorMessage = document.getElementById('error-message');
+        const submitPassword = document.getElementById('submit-password');
+        submitPassword.addEventListener('click', function() {
+            if (passwordInput.value === CORRECT_PASSWORD) {
+                passwordProtection.style.display = 'none';
+                testContent.style.display = 'block';
+            } else {
+                errorMessage.style.display = 'block';
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        });
+        passwordInput.addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                submitPassword.click();
+            }
+        });
+    </script>
+</body>
+</html>
