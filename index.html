@@ -127,17 +127,17 @@
             const submitPassword = document.getElementById('submit-password');
 
             function checkPassword() {
-                const inputVal = passwordInput.value.trim();
-                if (inputVal === CORRECT_PASSWORD) {
-                    passwordProtection.style.display = 'none';
-                    testContent.style.display = 'block';
-                    errorMessage.style.display = 'none';
-                } else {
-                    errorMessage.style.display = 'block';
-                    passwordInput.value = '';
-                    passwordInput.focus();
-                }
-            }
+    const inputVal = passwordInput.value.trim().toUpperCase(); // Converte para MAIÚSCULAS
+    if (inputVal === CORRECT_PASSWORD) {
+        passwordProtection.style.display = 'none';
+        testContent.style.display = 'block';
+        errorMessage.style.display = 'none';
+    } else {
+        errorMessage.style.display = 'block';
+        passwordInput.value = '';
+        passwordInput.focus();
+    }
+}
 
             submitPassword.addEventListener('click', checkPassword);
 
