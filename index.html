@@ -45,7 +45,7 @@
         .password-container { background-color: white; padding: 2rem; border-radius: 8px; max-width: 400px; width: 100%; text-align: center; box-shadow: 0 2px 15px rgba(0,0,0,0.2); }
         .password-logo { width: 80px; margin-bottom: 1rem; }
         #password-input { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
-        #submit-password { background-color: var(--ems-red); color: white; border: none; padding: 12px 24px; font-size: 16px; cursor: pointer; border-radius: 4px; width: 100%; font-weight: bold; text-transform: uppercase; transition: background 0.3s; }
+        #submit-password { type: button; background-color: var(--ems-red); color: white; border: none; padding: 12px 24px; font-size: 16px; cursor: pointer; border-radius: 4px; width: 100%; font-weight: bold; text-transform: uppercase; transition: background 0.3s; }
         #submit-password:hover { background-color: #a71f1c; }
         #error-message { color: #d32f2f; margin-top: 15px; display: none; font-weight: bold; }
     </style>
@@ -76,7 +76,7 @@
                     <h1>ACESSO RESTRITO</h1>
                     <p>Insira a senha de acesso para continuar:</p>
                     <input type="password" id="password-input" placeholder="Digite a senha">
-                    <button id="submit-password">ACESSAR TESTE</button>
+                    <button type="button" id="submit-password">ACESSAR TESTE</button>
                     <div id="error-message">Senha incorreta. Tente novamente.</div>
                 </div>
             </div>
@@ -90,8 +90,8 @@
                 <div class="container" style="position: relative;">
                     <div class="watermark" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
                         font-size: 5rem; color: rgba(0,0,0,0.05);">EMS</div>
-                    <h1 style="text-align: center; margin-bottom: 1.5rem;">TESTE DE ADMISSÃO EMS</h1>
-                    <p style="margin-bottom: 1rem;">Este teste avalia seus conhecimentos em primeiros socorros, protocolos de suporte avançado de vida, triagem de vítimas e comunicação médica.</p>
+                    <h1 style="text-align: center; margin-bottom: 1.5rem;'>TESTE DE ADMISSÃO EMS</h1>
+                    <p style="margin-bottom: 1rem;'>Este teste avalia seus conhecimentos em primeiros socorros, protocolos de suporte avançado de vida, triagem de vítimas e comunicação médica.</p>
                     <!-- Perguntas do teste aqui -->
                     <!-- Exemplo de pergunta -->
                     <ol style="margin-left: 1.5rem;">
@@ -108,35 +108,46 @@
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
-        // Configuração EmailJS (se aplicável)
-        (function(){ emailjs.init({ publicKey: "w_N4oJ960VgSnclDW" });})();
-        document.getElementById('emsForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Candidatura EMS enviada com sucesso!');
-            this.reset();
-        });
-        // Proteção por senha para o teste
-        const CORRECT_PASSWORD = "EMS2025";
-        const passwordProtection = document.getElementById('password-protection');
-        const testContent = document.getElementById('test-content');
-        const passwordInput = document.getElementById('password-input');
-        const errorMessage = document.getElementById('error-message');
-        const submitPassword = document.getElementById('submit-password');
-        submitPassword.addEventListener('click', function() {
-            if (passwordInput.value === CORRECT_PASSWORD) {
-                passwordProtection.style.display = 'none';
-                testContent.style.display = 'block';
-            } else {
-                errorMessage.style.display = 'block';
-                passwordInput.value = '';
-                passwordInput.focus();
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configuração EmailJS (se aplicável)
+            emailjs.init({ publicKey: "w_N4oJ960VgSnclDW" });
+
+            document.getElementById('emsForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Candidatura EMS enviada com sucesso!');
+                this.reset();
+            });
+
+            // Proteção por senha para o teste
+            const CORRECT_PASSWORD = "EMS2025";
+            const passwordProtection = document.getElementById('password-protection');
+            const testContent = document.getElementById('test-content');
+            const passwordInput = document.getElementById('password-input');
+            const errorMessage = document.getElementById('error-message');
+            const submitPassword = document.getElementById('submit-password');
+
+            function checkPassword() {
+                const inputVal = passwordInput.value.trim();
+                if (inputVal === CORRECT_PASSWORD) {
+                    passwordProtection.style.display = 'none';
+                    testContent.style.display = 'block';
+                    errorMessage.style.display = 'none';
+                } else {
+                    errorMessage.style.display = 'block';
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
             }
-        });
-        passwordInput.addEventListener('keyup', function(event) {
-            if (event.key === 'Enter') {
-                submitPassword.click();
-            }
+
+            submitPassword.addEventListener('click', checkPassword);
+
+            passwordInput.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    checkPassword();
+                }
+            });
         });
     </script>
 </body>
 </html>
+
